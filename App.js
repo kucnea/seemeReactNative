@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import type {Node} from 'react';
 import {
   SafeAreaView,
@@ -16,6 +16,7 @@ import {
   Text,
   useColorScheme,
   View,
+  Button,
 } from 'react-native';
 
 import {
@@ -26,6 +27,8 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+let byeText = 'Bye';
+
 const Section = ({children, title}): Node => {
   const isDarkMode = useColorScheme() === 'dark';
   return (
@@ -34,7 +37,7 @@ const Section = ({children, title}): Node => {
         style={[
           styles.sectionTitle,
           {
-            color: isDarkMode ? Colors.white : Colors.black,
+            color: Colors.white
           },
         ]}>
         {title}
@@ -43,7 +46,7 @@ const Section = ({children, title}): Node => {
         style={[
           styles.sectionDescription,
           {
-            color: isDarkMode ? Colors.light : Colors.dark,
+            color:Colors.light
           },
         ]}>
         {children}
@@ -56,34 +59,38 @@ const App: () => Node = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    backgroundColor: Colors.darker,
+    barStyle : 'light-content'
   };
+
+  function getLoadHello() {
+    return 'Hello';
+  }
+  
+  let [ count, setCount ] = useState(0);
+
+  function button2Presss(){
+    alert( 'press' );
+  }
 
   return (
     <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
         <Header />
         <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
+          style={backgroundStyle}>
+          <Section title="Title 1">
+            { getLoadHello() +' '+ byeText }
           </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
+          <Section>
+            <Button title = "AddCount" onPress={ () => setCount( count + 1 ) }/>
+            <Text>{ count + "\n" }</Text>
+            <Button title = "SetZeroCount" onPress={ () => setCount( 0 ) }/>
+            <Text>{ "\n" }</Text>
+            <Button title = "Click me" onPress={ button2Presss }/>
           </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
         </View>
       </ScrollView>
     </SafeAreaView>
